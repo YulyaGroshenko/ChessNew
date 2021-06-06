@@ -1,0 +1,34 @@
+﻿<Window x:Class="ChessReserve.WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ChessReserve.WPF"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800"
+        >
+    <Grid x:Name="Grid" ShowGridLines="True">
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Viewbox>
+            <Label MaxHeight="50">ШАХМАТЫ</Label>
+        </Viewbox>
+        <Viewbox Grid.Row="1" MaxHeight="70">
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="btn_Play" Click="Play_Click">Играть</Button>
+                <TextBox x:Name="Name" Visibility="Collapsed" Width="100"></TextBox>
+                <Button x:Name="btn_Ok" Visibility="Collapsed" Click="Ok_Click">Готово</Button>
+            </StackPanel>
+        </Viewbox>
+        <Viewbox Grid.Row="2" MaxHeight="70">
+            <Button x:Name="Records" Click="Records_Click">Рекорды</Button>
+        </Viewbox>
+        <Viewbox Grid.Row="3" MaxHeight="70">
+            <Button x:Name="Options" Click="Options_Click">Настройки</Button>
+        </Viewbox>
+    </Grid>
+</Window>
