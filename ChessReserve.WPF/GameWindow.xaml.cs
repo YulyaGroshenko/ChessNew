@@ -1,14 +1,9 @@
 ﻿using ChessReserve.Logic;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace ChessReserve.WPF
 {
@@ -40,7 +35,17 @@ namespace ChessReserve.WPF
                     BorderBrush = Brushes.Black
                 };
                 button.Click += Button_Click;
+                button.KeyDown += Button_KeyDown;
                 Canvas.Children.Add(button);
+            }
+        }
+
+        private void Button_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Back)
+            {
+                SelectCell = false;
+                SelectFigure = true;
             }
         }
         private void PrintField()
@@ -71,8 +76,6 @@ namespace ChessReserve.WPF
                 button.Background = optionsWindow.Colors[OptionData.FirstCellColor];
             if (((i / 8) % 2 != 0 && i % 2 != 0) || ((i / 8) % 2 == 0 && i % 2 == 0))
                 button.Background = optionsWindow.Colors[OptionData.SecondCellColor];
-            Canvas.SetLeft(button, button.Width * (i % 8));
-            Canvas.SetTop(button, button.Height * (i / 8));
         }
         private SolidColorBrush ChooseColor(Figure figure)
         {
@@ -85,39 +88,36 @@ namespace ChessReserve.WPF
             int index = Canvas.Children.IndexOf(sender as Button);
             Digit = index / 8;
             Letter = (Letters)(index % 8);
-            if (SelectFigure)
+            try
             {
-                try
+                if (SelectFigure && Game.CheckSide(Field[Digit, (int)Letter]))
                 {
                     Field[Digit, (int)Letter].Digit = Digit;
                     Field[Digit, (int)Letter].Letter = Letter;
                     Figure = Field[Digit, (int)Letter];
+                    SelectFigure = false;
+                    SelectCell = true;
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Выберите клетку, на которой стоит фигура");
-                }
-                SelectFigure = false;
-                SelectCell = true;
-            }
-            else if (SelectCell)
-            {
-                try
+                else if (SelectCell)
                 {
                     //Game.Cheats();
+                    //if (Game.CheckEndGame())
+                    //    EndGame(true);
                     Game.Play(Figure, Digit, Letter);
+                    if (!Game.CheckEndGame())
+                        EndGame(true);
+                    SelectCell = false;
+                    SelectFigure = true;
+                    PrintField();
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-                //if (Game.CheckEndGame())
-                //    EndGame(true);
-                if (!Game.CheckEndGame())
-                    EndGame(true);
-                SelectCell = false;
-                SelectFigure = true;
-                PrintField();
+            }
+            catch (NullReferenceException)
+            {
+                MessageBox.Show("Выберите клетку, на которой стоит фигура");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
         private void EndGame(bool end)
