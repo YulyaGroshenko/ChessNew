@@ -98,6 +98,13 @@ namespace ChessReserve.Logic
             FileWorker.SavePlayer(Player);
             FileWorker.SetRecords(Player);
         }
+        public bool CheckSide(Figure figure)
+        {
+            if (figure.Side == Player.Side)
+                return true;
+            else
+                throw new Exception("Сейчас очередь другой стороны");
+        }
         public void Cheats()
         {
             for (int i = 0; i < 8; i++)

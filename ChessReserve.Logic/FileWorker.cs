@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
 
@@ -38,15 +39,30 @@ namespace ChessReserve.Logic
             int index = CheckName(records, player);
             if (index != -1)
             {
-                string recordsVictorys = records[index].Split(" ")[3];
-                records[index] = records[index].Replace(recordsVictorys, player.Victorys.ToString());
+                records[index] = records[index].Replace(records[index].Split(" ")[3], player.Victorys.ToString());
             }
             else
             {
-                string RecordsName = records[4].Split(" ")[1];
-                string RecordsVictorys = records[4].Split(" ")[3];
-                records[4] = records[4].Replace(RecordsName, player.Name);
-                records[4] = records[4].Replace(RecordsVictorys, player.Victorys.ToString());
+                int recordsVictorys = int.Parse(records[4].Split(" ")[3]);
+                if (recordsVictorys < player.Victorys)
+                {
+
+                    for (int i = 0; i < records.Length; i++)
+                    {
+                        int victory = int.Parse(records[i].Split(" ")[3]);
+                        if (victory == player.Victorys)
+                        {
+                            break;
+                        }
+                        else if (player.Victorys > victory)
+                        {
+                            string name = records[4].Split(" ")[1];
+                            records[4] = records[4].Replace(name, player.Name);
+                            records[4] = records[4].Replace(records[i].Split(" ")[3], player.Victorys.ToString());
+                            break;
+                        }
+                    }
+                }
             }
             SortRecords(records);
             RecordsList = records;
