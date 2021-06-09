@@ -16,18 +16,5 @@ namespace ChessReserve.Logic
             Name = name;
             Side = Sides.White;
         }
-        //public int AddVictorys()
-        //{
-        //    if (File.Exists($"{FileWorker.Saves}\\{Name}"))
-        //    {
-        //        Player player = FileWorker.GetPlayer(Name);
-        //        return player.Victorys++;
-        //    }
-        //    else
-        //    {
-        //        Victorys += 1;
-        //    }
-        //    return Victorys;
-        //}
     }
 }
